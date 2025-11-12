@@ -102,7 +102,7 @@ export class TestDataService {
   /**
    * Generate user test data
    */
-  private generateUser(index: number, options?: any): any {
+  private generateUser(index: number, _options?: any): any {
     const firstName = this.randomChoice(this.firstNames);
     const lastName = this.randomChoice(this.lastNames);
     const domain = this.randomChoice(['gmail.com', 'yahoo.com', 'outlook.com', 'company.com']);
@@ -139,7 +139,7 @@ export class TestDataService {
   /**
    * Generate product test data
    */
-  private generateProduct(index: number, options?: any): any {
+  private generateProduct(index: number, _options?: any): any {
     const adj = this.randomChoice(this.productAdjectives);
     const noun = this.randomChoice(this.productNouns);
     const category = this.randomChoice(this.categories);
@@ -184,7 +184,7 @@ export class TestDataService {
   /**
    * Generate order test data
    */
-  private generateOrder(index: number, options?: any): any {
+  private generateOrder(index: number, _options?: any): any {
     const itemCount = Math.floor(Math.random() * 5) + 1;
     const items = [];
     let totalAmount = 0;
@@ -252,7 +252,7 @@ export class TestDataService {
   /**
    * Generate transaction test data
    */
-  private generateTransaction(index: number, options?: any): any {
+  private generateTransaction(index: number, _options?: any): any {
     const amount = Math.round((Math.random() * 5000 + 10) * 100) / 100;
     const transactionDateObj = new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000);
     const transactionDate = transactionDateObj.toISOString();
@@ -288,7 +288,7 @@ export class TestDataService {
   /**
    * Generate custom data based on schema
    */
-  private generateCustom(index: number, schema?: Record<string, any>, options?: any): any {
+  private generateCustom(index: number, schema?: Record<string, any>, _options?: any): any {
     if (!schema) {
       return {
         id: randomUUID(),

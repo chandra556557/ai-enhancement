@@ -10,16 +10,17 @@ const externalAPIService = new ExternalAPIService();
 /**
  * Create API configuration
  */
-export const createAPIConfig = async (req: Request, res: Response) => {
+export const createAPIConfig = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user?.id;
     const { name, apiType, endpoint, method, headers, authType, authConfig, requestTemplate, responseMapping, isActive } = req.body;
 
     if (!name || !endpoint || !method) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'name, endpoint, and method are required'
       });
+      return;
     }
 
     const config = await externalAPIService.createConfig(userId, {
@@ -74,7 +75,7 @@ export const getAPIConfigs = async (req: Request, res: Response) => {
 /**
  * Get API configuration by ID
  */
-export const getAPIConfig = async (req: Request, res: Response) => {
+export const getAPIConfig = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user?.id;
     const { id } = req.params;
@@ -82,10 +83,11 @@ export const getAPIConfig = async (req: Request, res: Response) => {
     const config = await externalAPIService.getConfigById(userId, id);
 
     if (!config) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'API configuration not found'
       });
+      return;
     }
 
     res.json({
@@ -130,7 +132,7 @@ export const updateAPIConfig = async (req: Request, res: Response) => {
 /**
  * Delete API configuration
  */
-export const deleteAPIConfig = async (req: Request, res: Response) => {
+export const deleteAPIConfig = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user?.id;
     const { id } = req.params;
@@ -138,10 +140,11 @@ export const deleteAPIConfig = async (req: Request, res: Response) => {
     const deleted = await externalAPIService.deleteConfig(userId, id);
 
     if (!deleted) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         message: 'API configuration not found'
       });
+      return;
     }
 
     res.json({
@@ -161,16 +164,17 @@ export const deleteAPIConfig = async (req: Request, res: Response) => {
 /**
  * Execute API call
  */
-export const executeAPICall = async (req: Request, res: Response) => {
+export const executeAPICall = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user?.id;
     const { configId, data, overrides } = req.body;
 
     if (!configId) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'configId is required'
       });
+      return;
     }
 
     const result = await externalAPIService.executeCall(userId, {
@@ -221,16 +225,17 @@ export const getAPICallLogs = async (req: Request, res: Response) => {
 /**
  * Test API configuration (execute without saving)
  */
-export const testAPIConfig = async (req: Request, res: Response) => {
+export const testAPIConfig = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user?.id;
     const { endpoint, method, headers, authType, authConfig, data } = req.body;
 
     if (!endpoint || !method) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         message: 'endpoint and method are required'
       });
+      return;
     }
 
     // Create temporary config

@@ -56,7 +56,6 @@ export class ExternalAPIService {
     let config: ExternalAPIConfig | null = null;
     let statusCode = 0;
     let responseData: any = null;
-    let error: string | undefined;
 
     try {
       // Get API configuration
@@ -113,7 +112,7 @@ export class ExternalAPIService {
     } catch (err: any) {
       const duration = Date.now() - startTime;
       statusCode = err.response?.status || 0;
-      error = err.message;
+      const errorMessage = err.message;
 
       // Log failed call
       const callLogId = await this.logAPICall({
@@ -126,14 +125,14 @@ export class ExternalAPIService {
         statusCode,
         duration,
         success: false,
-        error: err.message
+        error: errorMessage
       });
 
       return {
         success: false,
         statusCode,
         duration,
-        error: err.message,
+        error: errorMessage,
         rawResponse: err.response?.data,
         callLogId
       };

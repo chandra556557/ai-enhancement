@@ -119,7 +119,7 @@ export class MLEnhancementService {
   /**
    * Parse code to AST
    */
-  private parseCode(code: string, language: string): any {
+  private parseCode(code: string, _language: string): any {
     try {
       return parser.parse(code, {
         sourceType: 'module',
@@ -134,7 +134,7 @@ export class MLEnhancementService {
   /**
    * Extract features from AST for ML model
    */
-  private extractFeatures(ast: any, code: string): PatternFeatures {
+  private extractFeatures(ast: any, _code: string): PatternFeatures {
     const features: PatternFeatures = {
       hasTimeout: false,
       hasCssSelector: false,

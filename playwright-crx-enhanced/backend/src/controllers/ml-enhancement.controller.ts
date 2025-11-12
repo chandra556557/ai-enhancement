@@ -11,7 +11,7 @@ import pool from '../db';
  * POST /api/ml/enhance-script/:id
  * Enhance a script using ML
  */
-export const enhanceScriptWithML = async (req: Request, res: Response) => {
+export const enhanceScriptWithML = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user.userId;
     const { id } = req.params;
@@ -23,10 +23,11 @@ export const enhanceScriptWithML = async (req: Request, res: Response) => {
     );
 
     if (!rows.length) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: 'Script not found'
       });
+      return;
     }
 
     const script = rows[0];
@@ -58,15 +59,16 @@ export const enhanceScriptWithML = async (req: Request, res: Response) => {
  * POST /api/ml/enhance-code
  * Enhance arbitrary code (not saved)
  */
-export const enhanceCodeWithML = async (req: Request, res: Response) => {
+export const enhanceCodeWithML = async (req: Request, res: Response): Promise<void> => {
   try {
     const { code, language } = req.body;
 
     if (!code) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Code is required'
       });
+      return;
     }
 
     // Enhance with ML
@@ -92,23 +94,25 @@ export const enhanceCodeWithML = async (req: Request, res: Response) => {
  * POST /api/ml/batch-enhance
  * Batch enhance multiple scripts
  */
-export const batchEnhanceWithML = async (req: Request, res: Response) => {
+export const batchEnhanceWithML = async (req: Request, res: Response): Promise<void> => {
   try {
     const userId = (req as any).user.userId;
     const { scriptIds } = req.body;
 
     if (!scriptIds || !Array.isArray(scriptIds) || scriptIds.length === 0) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'scriptIds array is required'
       });
+      return;
     }
 
     if (scriptIds.length > 50) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: 'Maximum 50 scripts per batch'
       });
+      return;
     }
 
     // Get scripts
@@ -120,10 +124,11 @@ export const batchEnhanceWithML = async (req: Request, res: Response) => {
     );
 
     if (rows.length === 0) {
-      return res.status(404).json({
+      res.status(404).json({
         success: false,
         error: 'No scripts found'
       });
+      return;
     }
 
     // Enhance all scripts
@@ -180,7 +185,7 @@ export const batchEnhanceWithML = async (req: Request, res: Response) => {
  * GET /api/ml/status
  * Get ML service status
  */
-export const getMLStatus = async (req: Request, res: Response) => {
+export const getMLStatus = async (_req: Request, res: Response): Promise<void> => {
   try {
     res.status(200).json({
       success: true,
