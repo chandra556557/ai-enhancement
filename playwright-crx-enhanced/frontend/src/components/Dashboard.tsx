@@ -6,6 +6,7 @@ import ImportScriptModal from './ImportScriptModal';
 import ScriptValidationModal from './ScriptValidationModal';
 import ScriptCueCards from './ScriptCueCards';
 import TestDataManager from './TestDataManager';
+import ErrorAnalysis from './ErrorAnalysis';
 import './Dashboard.css';
 
 const API_URL = 'http://localhost:3001/api';
@@ -269,7 +270,7 @@ Navigating to Test Runs...`);
         {
           name: scriptName,
           language: importLanguage,
-          content: fileContent,
+          code: fileContent,
           projectId: selectedProjectId,
           description: `Imported from ${importFile.name}`
         },
@@ -794,13 +795,8 @@ Navigating to Test Runs...`);
 
           {/* Analytics */}
           {activeView === 'analytics' && (
-            <div className="view-container">
-              <h1 className="view-title">Analytics</h1>
-              <div className="empty-state">
-                <div className="empty-icon">📉</div>
-                <h3>Analytics Dashboard</h3>
-                <p>Analytics and trend reports are under construction.</p>
-              </div>
+            <div className="view-container full-width">
+              <ErrorAnalysis projectId={selectedProjectId} />
             </div>
           )}
 

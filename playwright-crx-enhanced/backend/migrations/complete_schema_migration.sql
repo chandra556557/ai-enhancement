@@ -27,10 +27,10 @@ DROP TABLE IF EXISTS "User" CASCADE;
 -- TABLE: User
 -- =====================================================
 CREATE TABLE "User" (
-    id VARCHAR(30) PRIMARY KEY,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    email VARCHAR(200) NOT NULL UNIQUE,
+    password VARCHAR(200) NOT NULL,
+    name VARCHAR(200) NOT NULL,
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW()
 );
@@ -41,9 +41,9 @@ CREATE INDEX "User_email_idx" ON "User"(email);
 -- TABLE: RefreshToken
 -- =====================================================
 CREATE TABLE "RefreshToken" (
-    id VARCHAR(30) PRIMARY KEY,
-    token VARCHAR(500) NOT NULL UNIQUE,
-    "userId" VARCHAR(30) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    token VARCHAR(200) NOT NULL UNIQUE,
+    "userId" VARCHAR(200) NOT NULL,
     "expiresAt" TIMESTAMP NOT NULL,
     "revokedAt" TIMESTAMP,
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -58,10 +58,10 @@ CREATE INDEX "RefreshToken_token_idx" ON "RefreshToken"(token);
 -- TABLE: Project
 -- =====================================================
 CREATE TABLE "Project" (
-    id VARCHAR(30) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
     description TEXT,
-    "userId" VARCHAR(30) NOT NULL,
+    "userId" VARCHAR(200) NOT NULL,
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     CONSTRAINT "Project_userId_fkey" FOREIGN KEY ("userId") 
@@ -75,16 +75,16 @@ CREATE INDEX "Project_createdAt_idx" ON "Project"("createdAt");
 -- TABLE: Script
 -- =====================================================
 CREATE TABLE "Script" (
-    id VARCHAR(30) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
     description TEXT,
-    language VARCHAR(50) NOT NULL DEFAULT 'typescript',
+    language VARCHAR(200) NOT NULL DEFAULT 'typescript',
     code TEXT NOT NULL,
-    "projectId" VARCHAR(30),
-    "userId" VARCHAR(30) NOT NULL,
-    "browserType" VARCHAR(50) NOT NULL DEFAULT 'chromium',
+    "projectId" VARCHAR(200),
+    "userId" VARCHAR(200) NOT NULL,
+    "browserType" VARCHAR(200) NOT NULL DEFAULT 'chromium',
     viewport JSONB,
-    "testIdAttribute" VARCHAR(100) NOT NULL DEFAULT 'data-testid',
+    "testIdAttribute" VARCHAR(200) NOT NULL DEFAULT 'data-testid',
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     CONSTRAINT "Script_projectId_fkey" FOREIGN KEY ("projectId") 
@@ -101,17 +101,17 @@ CREATE INDEX "Script_createdAt_idx" ON "Script"("createdAt");
 -- TABLE: TestRun
 -- =====================================================
 CREATE TABLE "TestRun" (
-    id VARCHAR(30) PRIMARY KEY,
-    "scriptId" VARCHAR(30) NOT NULL,
-    "userId" VARCHAR(30) NOT NULL,
-    status VARCHAR(50) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    "scriptId" VARCHAR(200) NOT NULL,
+    "userId" VARCHAR(200) NOT NULL,
+    status VARCHAR(200) NOT NULL,
     duration INTEGER,
     "errorMsg" TEXT,
     "traceUrl" TEXT,
     "screenshotUrls" JSONB,
     "videoUrl" TEXT,
-    environment VARCHAR(50),
-    browser VARCHAR(50) NOT NULL DEFAULT 'chromium',
+    environment VARCHAR(200),
+    browser VARCHAR(200) NOT NULL DEFAULT 'chromium',
     viewport JSONB,
     "startedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "completedAt" TIMESTAMP,
@@ -131,13 +131,13 @@ CREATE INDEX "TestRun_startedAt_idx" ON "TestRun"("startedAt");
 -- TABLE: TestStep
 -- =====================================================
 CREATE TABLE "TestStep" (
-    id VARCHAR(30) PRIMARY KEY,
-    "testRunId" VARCHAR(30) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    "testRunId" VARCHAR(200) NOT NULL,
     "stepNumber" INTEGER NOT NULL,
-    action VARCHAR(255) NOT NULL,
+    action VARCHAR(200) NOT NULL,
     selector TEXT,
     value TEXT,
-    status VARCHAR(50) NOT NULL,
+    status VARCHAR(200) NOT NULL,
     duration INTEGER,
     "errorMsg" TEXT,
     timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -152,12 +152,12 @@ CREATE INDEX "TestStep_stepNumber_idx" ON "TestStep"("stepNumber");
 -- TABLE: ExtensionScript
 -- =====================================================
 CREATE TABLE "ExtensionScript" (
-    id VARCHAR(30) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
     description TEXT,
     code TEXT NOT NULL,
-    "scriptType" VARCHAR(50) NOT NULL,
-    "userId" VARCHAR(30) NOT NULL,
+    "scriptType" VARCHAR(200) NOT NULL,
+    "userId" VARCHAR(200) NOT NULL,
     enabled BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -172,11 +172,11 @@ CREATE INDEX "ExtensionScript_scriptType_idx" ON "ExtensionScript"("scriptType")
 -- TABLE: Variable
 -- =====================================================
 CREATE TABLE "Variable" (
-    id VARCHAR(30) PRIMARY KEY,
-    "scriptId" VARCHAR(30) NOT NULL,
-    name VARCHAR(255) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    "scriptId" VARCHAR(200) NOT NULL,
+    name VARCHAR(200) NOT NULL,
     value TEXT NOT NULL,
-    type VARCHAR(50) NOT NULL,
+    type VARCHAR(200) NOT NULL,
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     CONSTRAINT "Variable_scriptId_fkey" FOREIGN KEY ("scriptId") 
@@ -190,8 +190,8 @@ CREATE INDEX "Variable_scriptId_idx" ON "Variable"("scriptId");
 -- TABLE: Breakpoint
 -- =====================================================
 CREATE TABLE "Breakpoint" (
-    id VARCHAR(30) PRIMARY KEY,
-    "scriptId" VARCHAR(30) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    "scriptId" VARCHAR(200) NOT NULL,
     "lineNumber" INTEGER NOT NULL,
     enabled BOOLEAN NOT NULL DEFAULT true,
     condition TEXT,
@@ -207,10 +207,10 @@ CREATE INDEX "Breakpoint_scriptId_idx" ON "Breakpoint"("scriptId");
 -- TABLE: TestSuite
 -- =====================================================
 CREATE TABLE "TestSuite" (
-    id VARCHAR(30) PRIMARY KEY,
-    name VARCHAR(255) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
     description TEXT,
-    "userId" VARCHAR(30) NOT NULL,
+    "userId" VARCHAR(200) NOT NULL,
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     CONSTRAINT "TestSuite_userId_fkey" FOREIGN KEY ("userId") 
@@ -223,11 +223,11 @@ CREATE INDEX "TestSuite_userId_idx" ON "TestSuite"("userId");
 -- TABLE: TestData
 -- =====================================================
 CREATE TABLE "TestData" (
-    id VARCHAR(30) PRIMARY KEY,
-    "suiteId" VARCHAR(30) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    environment VARCHAR(50) NOT NULL DEFAULT 'dev',
-    type VARCHAR(50) NOT NULL DEFAULT 'user',
+    id VARCHAR(200) PRIMARY KEY,
+    "suiteId" VARCHAR(200) NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    environment VARCHAR(200) NOT NULL DEFAULT 'dev',
+    type VARCHAR(200) NOT NULL DEFAULT 'user',
     data JSONB NOT NULL,
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
@@ -243,14 +243,14 @@ CREATE INDEX "TestData_type_idx" ON "TestData"(type);
 -- TABLE: ApiRequest
 -- =====================================================
 CREATE TABLE "ApiRequest" (
-    id VARCHAR(30) PRIMARY KEY,
-    "userId" VARCHAR(30) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    method VARCHAR(10) NOT NULL,
+    id VARCHAR(200) PRIMARY KEY,
+    "userId" VARCHAR(200) NOT NULL,
+    name VARCHAR(200) NOT NULL,
+    method VARCHAR(200) NOT NULL,
     url TEXT NOT NULL,
     headers JSONB,
     body JSONB,
-    environment VARCHAR(50) NOT NULL DEFAULT 'dev',
+    environment VARCHAR(200) NOT NULL DEFAULT 'dev',
     "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
     CONSTRAINT "ApiRequest_userId_fkey" FOREIGN KEY ("userId") 
@@ -307,26 +307,26 @@ CREATE TRIGGER update_api_request_updated_at BEFORE UPDATE ON "ApiRequest"
 -- VALUES ('test-user-001', 'admin@example.com', '$2b$10$example_hashed_password', 'Admin User', NOW(), NOW());
 
 -- =====================================================
--- VERIFICATION QUERIES
+-- VERIFICATION QUERIES (Run separately after migration)
 -- =====================================================
 
 -- Count all tables
-SELECT 
-    schemaname,
-    tablename,
-    (SELECT COUNT(*) FROM pg_class WHERE relname = tablename) as table_exists
-FROM pg_tables 
-WHERE schemaname = 'public'
-ORDER BY tablename;
+-- SELECT 
+--     schemaname,
+--     tablename,
+--     (SELECT COUNT(*) FROM pg_class WHERE relname = tablename) as table_exists
+-- FROM pg_tables 
+-- WHERE schemaname = 'public'
+-- ORDER BY tablename;
 
 -- List all indexes
-SELECT 
-    schemaname,
-    tablename,
-    indexname
-FROM pg_indexes 
-WHERE schemaname = 'public'
-ORDER BY tablename, indexname;
+-- SELECT 
+--     schemaname,
+--     tablename,
+--     indexname
+-- FROM pg_indexes 
+-- WHERE schemaname = 'public'
+-- ORDER BY tablename, indexname;
 
 -- =====================================================
 -- MIGRATION COMPLETE

@@ -64,6 +64,7 @@ export const ScriptEnhancementModal: React.FC<ScriptEnhancementModalProps> = ({
   const [selectedSuggestions, setSelectedSuggestions] = useState<Set<number>>(new Set());
   const [viewMode, setViewMode] = useState<'suggestions' | 'diff'>('suggestions');
   const [error, setError] = useState<string | null>(null);
+  const [useMLEnhancement, setUseMLEnhancement] = useState(false); // ML toggle
   
   // Phase I: Category toggles for selective enhancement
   const [enableSelectors, setEnableSelectors] = useState(true);
@@ -97,7 +98,7 @@ export const ScriptEnhancementModal: React.FC<ScriptEnhancementModalProps> = ({
     if (selectedScriptId) {
       loadEnhancement();
     }
-  }, [selectedScriptId]);
+  }, [selectedScriptId, useMLEnhancement]); // Re-run when ML toggle changes
 
   const loadProjects = async () => {
     setLoadingProjects(true);
@@ -144,12 +145,17 @@ export const ScriptEnhancementModal: React.FC<ScriptEnhancementModalProps> = ({
   const loadEnhancement = async () => {
     if (!selectedScriptId) return;
     
-    console.log('Loading enhancement for script:', selectedScriptId);
+    console.log('Loading enhancement for script:', selectedScriptId, 'ML mode:', useMLEnhancement);
     setLoading(true);
     setError(null);
     try {
+      // Choose endpoint based on ML toggle
+      const endpoint = useMLEnhancement 
+        ? `${API_URL}/ml/enhance-script/${selectedScriptId}`
+        : `${API_URL}/scripts/${selectedScriptId}/enhance`;
+      
       const res = await axios.post(
-        `${API_URL}/scripts/${selectedScriptId}/enhance`,
+        endpoint,
         {},
         { headers }
       );
@@ -335,7 +341,35 @@ export const ScriptEnhancementModal: React.FC<ScriptEnhancementModalProps> = ({
               <h2>🚀 AI Script Enhancement</h2>
               <p className="script-name">Select a script to enhance</p>
             </div>
-            <button onClick={onClose} className="close-btn">×</button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              {/* ML Enhancement Toggle */}
+              <label style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '8px', 
+                cursor: 'pointer',
+                padding: '8px 12px',
+                background: useMLEnhancement ? '#3b82f6' : '#e2e8f0',
+                color: useMLEnhancement ? 'white' : '#475569',
+                borderRadius: '8px',
+                fontWeight: 500,
+                fontSize: '14px',
+                transition: 'all 0.2s'
+              }}
+              title={useMLEnhancement 
+                ? 'ML Mode: Uses AST analysis and pattern recognition for intelligent suggestions' 
+                : 'Rule-Based Mode: Uses predefined patterns for fast analysis'}
+              >
+                <input 
+                  type="checkbox" 
+                  checked={useMLEnhancement} 
+                  onChange={(e) => setUseMLEnhancement(e.target.checked)}
+                  style={{ cursor: 'pointer', accentColor: '#3b82f6' }}
+                />
+                <span>🧠 ML Enhancement</span>
+              </label>
+              <button onClick={onClose} className="close-btn">×</button>
+            </div>
           </div>
 
           <div className="script-selector">
@@ -419,7 +453,31 @@ export const ScriptEnhancementModal: React.FC<ScriptEnhancementModalProps> = ({
             <h2>🚀 AI Script Enhancement</h2>
             <p className="script-name">{selectedScriptName}</p>
           </div>
-          <button onClick={onClose} className="close-btn">×</button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            {/* ML Enhancement Toggle */}
+            <label style={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '8px', 
+              cursor: 'pointer',
+              padding: '8px 12px',
+              background: useMLEnhancement ? '#3b82f6' : '#e2e8f0',
+              color: useMLEnhancement ? 'white' : '#475569',
+              borderRadius: '8px',
+              fontWeight: 500,
+              fontSize: '14px',
+              transition: 'all 0.2s'
+            }}>
+              <input 
+                type="checkbox" 
+                checked={useMLEnhancement} 
+                onChange={(e) => setUseMLEnhancement(e.target.checked)}
+                style={{ cursor: 'pointer', accentColor: '#3b82f6' }}
+              />
+              <span>🧠 ML Enhancement</span>
+            </label>
+            <button onClick={onClose} className="close-btn">×</button>
+          </div>
         </div>
 
         <div className="enhancement-summary">
@@ -431,10 +489,10 @@ export const ScriptEnhancementModal: React.FC<ScriptEnhancementModalProps> = ({
             </div>
           </div>
           <div className="summary-card">
-            <div className="summary-icon">📊</div>
+            <div className="summary-icon">{useMLEnhancement ? '🧠' : '📊'}</div>
             <div>
-              <div className="summary-value">{enhancement.summary.estimatedImprovement}%</div>
-              <div className="summary-label">Est. Improvement</div>
+              <div className="summary-value">{useMLEnhancement ? 'ML' : 'Rule'}</div>
+              <div className="summary-label">Mode</div>
             </div>
           </div>
           <div className="summary-card">

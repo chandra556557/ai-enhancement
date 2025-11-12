@@ -18,6 +18,8 @@ import allureRoutes from './routes/allure.routes';
 import apiTestingRoutes from './routes/apiTesting.routes';
 import testDataRoutes from './routes/testData.routes';
 import apiRequestRoutes from './routes/apiRequest.routes';
+import mlEnhancementRoutes from './routes/ml-enhancement.routes';
+import testDataManagementRoutes from './routes/testdata-management.routes';
 
 // Middleware
 import { errorHandler } from './middleware/errorHandler';
@@ -122,6 +124,7 @@ app.get('/api', (_req, res) => {
       '/api/api-testing/*',
       '/api/extensions/*',
       '/api/allure',
+      '/api/ml/*',
       '/api-docs',
       '/api-docs.json'
     ]
@@ -142,6 +145,8 @@ app.use('/api/allure', allureRoutes);
 app.use('/api/api-testing', apiTestingRoutes);
 app.use('/api/test-data', testDataRoutes);
 app.use('/api/api-requests', apiRequestRoutes);
+app.use('/api/ml', mlEnhancementRoutes);
+app.use('/api/testdata', testDataManagementRoutes);
 
 app.use((_req, res) => { res.status(404).json({ error: 'Route not found' }); });
 app.use(errorHandler);
